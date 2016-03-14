@@ -36,7 +36,7 @@ api
     └── get.babelon
 ```
 
-`$ cat api/user/get.babelon`
+`> api/user/get.babelon`
 ```javascript
 {
   ok: true,
@@ -50,11 +50,12 @@ api
 ### Rules for when you need them
 
 ```
-example/api
+api
 └── gatekeeper
     └── _rules.babelon
 ```
 
+`> api/gatekeeper/_rules.babelon`
 ```javascript
 [
   // correct password
