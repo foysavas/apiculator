@@ -1,0 +1,7 @@
+{
+  ok: true,
+  users: _.times(5, () => ({
+    id: faker.random.number(),
+    name: `${faker.name.firstName()} ${faker.name.lastName()}`
+  }))
+}

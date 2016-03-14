@@ -1,0 +1,13 @@
+{
+  ok: true,
+  user: {
+    id: params.id,
+    name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    email: faker.internet.email(),
+    posts: random_posts(5).map((p) => ({
+      id: p.id,
+      user_id: params.id,
+      title: p.title
+    }))
+  }
+}

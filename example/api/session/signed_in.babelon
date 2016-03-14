@@ -1,0 +1,6 @@
+{
+  ok: true,
+  user: {
+    id: session.user_id
+  }
+}

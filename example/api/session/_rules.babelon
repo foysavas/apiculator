@@ -1,0 +1,53 @@
+[
+  // session details
+  {
+    request: {
+      method: 'get',
+      session: (s) => (s.user_id)
+    },
+    response: {
+      template: 'signed_in.babelon'
+    }
+  },
+  {
+    request: {
+      method: 'get'
+    },
+    response: {
+      json: { ok: false }
+    }
+  },
+  // sign out
+  {
+    request: {
+      method: 'delete',
+    },
+    response: {
+      session: null,
+      redirect: '/'
+    }
+  },
+  // bad sign in
+  {
+    request: {
+      method: 'post',
+      tags: ['bad']
+    },
+    response: {
+      session: null,
+      json: {ok: false}
+    }
+  },
+  // good sign in
+  {
+    request: {
+      method: 'post'
+    },
+    response: {
+      session: (locals) => ({
+        user_id: locals.faker.random.number()
+      }),
+      template: 'signed_in.babelon'
+    }
+  }
+]

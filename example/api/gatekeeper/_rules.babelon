@@ -1,0 +1,18 @@
+[
+  // correct password
+  {
+    request: {
+      body: (body) => (body.password === 'secret')
+    },
+    response: {
+      status: 302,
+      redirect: '/users'
+    }
+  },
+  // catches all other requests (wrong password)
+  {
+    response: {
+      json: { ok: false }
+    }
+  }
+]
