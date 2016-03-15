@@ -7,12 +7,15 @@ var path = require('path');
 var url = require('url');
 var recursiveReadSync = require('recursive-readdir-sync')
 var anyBody = require('body/any');
+var cors = require('cors');
 
 var apiculator = {};
 
 apiculator.createServer = function(api_dir, helpers) {
   api_dir = path.resolve(api_dir);
   var app = express();
+  app.use(cors({credentials: true, origin: true}));
+  app.options('*', cors());
   app.use(express_session({
     secret: 'not-so-secret',
     resave: false,
@@ -176,9 +179,10 @@ apiculator.applyMatchingRule = function(api_dir, helpers, routes, req, res) {
         );
       }
     }
-    res.end();
+    // res.end();
   } else {
-    res.status(404).end();
+    res.status(404);
+    // .end();
   }
 }
 
@@ -186,7 +190,8 @@ apiculator.applyMatchingTemplate = function(api_dir, helpers, routes, req, res) 
   var meth = req.method.toLowerCase();
   var route_info = routes[req.route.path];
   if (route_info.methods.indexOf(meth) == -1) {
-    res.status(404).end();
+    res.status(404);
+    //.end();
   } else {
     var default_re = new RegExp('^'+meth+'\\.');
     var tagged_re = new RegExp('^'+meth+'\\+');
@@ -239,7 +244,8 @@ apiculator.applyMatchingTemplate = function(api_dir, helpers, routes, req, res) 
         locals
       );
     } else {
-      res.status(404).end();
+      res.status(404);
+      // .end();
     }
   }
 }

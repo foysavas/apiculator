@@ -32,6 +32,7 @@
     "babelon": "^1.0.0",
     "body": "^5.1.0",
     "connect": "^3.4.1",
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "recursive-readdir-sync": "^1.0.6"
