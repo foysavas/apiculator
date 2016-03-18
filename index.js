@@ -105,6 +105,12 @@ apiculator.applyMatchingRule = function(api_dir, helpers, routes, req, res) {
       }
     }
 
+    if (rule.request.query) {
+      if (typeof rule.request.query === "function") {
+        if (!rule.request.query(req.query)) { continue; }
+      }
+    }
+
     if (rule.request.params) {
       if (typeof rule.request.params === "function") {
         if (!rule.request.params(req.params)) { continue; }
@@ -226,6 +232,7 @@ apiculator.applyMatchingTemplate = function(api_dir, helpers, routes, req, res) 
 
     var locals = Object.assign(helpers,{
       params: req.params,
+      query: req.query,
       body: req.body,
       tags: req_tags,
       session: req.session

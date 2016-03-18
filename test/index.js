@@ -47,6 +47,21 @@ describe('MATCH .../${method}.babelon', function() {
       });
     });
   });
+
+  describe('GET /hello', function(){
+    it('should say hello', function(done) {
+      request.get('/hello?name=everyone')
+      .expect(200)
+      .expect(function(res){
+        assert.equal(res.body.ok,true);
+        assert.equal(res.body.answer,'hello everyone!');
+      })
+      .end(function(err,res) {
+        if (err) return done(err);
+        done();
+      });
+    });
+  });
 });
 
 describe('MATCH .../${method}+${tag}.babelon', function() {

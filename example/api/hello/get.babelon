@@ -1,0 +1,4 @@
+{
+  ok: true,
+  answer: `hello ${query.name || 'world'}!`
+}
