@@ -10,6 +10,8 @@ var app = articulator.createServer(`${__dirname}/../example/api`, {
       title: faker.lorem.sentence()
     }));
   }
+}, function(res){
+  return { full_url: `http://example.local/${res.url}` };
 });
 
 if (require.main === module) {

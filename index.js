@@ -11,7 +11,7 @@ var cors = require('cors');
 
 var apiculator = {};
 
-apiculator.createServer = function(api_dir, helpers) {
+apiculator.createServer = function(api_dir, helpers, dynamic_helpers) {
   api_dir = path.resolve(api_dir);
   var app = express();
   app.use(cors({credentials: true, origin: true}));
@@ -28,7 +28,9 @@ apiculator.createServer = function(api_dir, helpers) {
       app.all(route, function(req, res) {
         anyBody(req,res, function(err, body) {
           req.body = body;
-          apiculator.applyMatchingRule(api_dir, helpers, routes, req, res);
+          var req_helpers = helpers;
+          if (dynamic_helpers) { req_helpers = Object.assign({}, req_helpers, dynamic_helpers(req)); }
+          apiculator.applyMatchingRule(api_dir, req_helpers, routes, req, res);
         });
       });
     } else {
@@ -37,7 +39,9 @@ apiculator.createServer = function(api_dir, helpers) {
         app[meth](route, function(req, res) {
           anyBody(req,res, function(err, body) {
             req.body = body;
-            apiculator.applyMatchingTemplate(api_dir, helpers, routes, req, res);
+            var req_helpers = helpers;
+            if (dynamic_helpers) { req_helpers = Object.assign({}, req_helpers, dynamic_helpers(req)); }
+            apiculator.applyMatchingTemplate(api_dir, req_helpers, routes, req, res);
           });
         });
       }

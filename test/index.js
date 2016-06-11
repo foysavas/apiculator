@@ -11,6 +11,8 @@ var app = articulator.createServer(`${__dirname}/../example/api`, {
       title: faker.lorem.sentence()
     }));
   }
+}, function(res){
+  return { full_url: `http://example.local${res.url}` };
 });
 var request = require('supertest').agent(app.listen());
 
@@ -182,6 +184,23 @@ describe('MATCH .../_rules.babelon', function() {
           if (err) return done(err);
           done();
         });
+      });
+    });
+  });
+});
+
+describe('Dynamic Helpers', function() {
+  describe('GET /dynamics', function() {
+    it('should return ok', function(done) {
+      request.get('/dynamics')
+      .expect(200)
+      .expect({
+        "ok": true,
+        "full_url": "http://example.local/dynamics"
+      })
+      .end(function(err,res) {
+        if (err) return done(err);
+        done();
       });
     });
   });
