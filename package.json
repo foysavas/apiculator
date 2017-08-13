@@ -1,6 +1,6 @@
 {
   "name": "apiculator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Mock JSON API tool",
   "main": "index.js",
   "directories": {
@@ -35,6 +35,7 @@
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "multer": "^1.3.0",
     "recursive-readdir-sync": "^1.0.6"
   },
   "devDependencies": {

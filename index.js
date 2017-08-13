@@ -7,6 +7,7 @@ var path = require('path');
 var url = require('url');
 var recursiveReadSync = require('recursive-readdir-sync')
 var anyBody = require('body/any');
+var anyMulter = require('multer')().any();
 var cors = require('cors');
 
 var apiculator = {};
@@ -26,22 +27,26 @@ apiculator.createServer = function(api_dir, helpers, dynamic_helpers) {
     var route_info = routes[route];
     if (route_info.rules) {
       app.all(route, function(req, res) {
-        anyBody(req,res, function(err, body) {
-          req.body = body;
-          var req_helpers = helpers;
-          if (dynamic_helpers) { req_helpers = Object.assign({}, req_helpers, dynamic_helpers(req)); }
-          apiculator.applyMatchingRule(api_dir, req_helpers, routes, req, res);
+        anyMulter(req, res, function(err) {
+          anyBody(req,res, function(err, body) {
+            if (!err && body) { req.body = body; }
+            var req_helpers = helpers;
+            if (dynamic_helpers) { req_helpers = Object.assign({}, req_helpers, dynamic_helpers(req)); }
+            apiculator.applyMatchingRule(api_dir, req_helpers, routes, req, res);
+          });
         });
       });
     } else {
       for (var i in route_info.methods) {
         var meth = route_info.methods[i];
         app[meth](route, function(req, res) {
-          anyBody(req,res, function(err, body) {
-            req.body = body;
-            var req_helpers = helpers;
-            if (dynamic_helpers) { req_helpers = Object.assign({}, req_helpers, dynamic_helpers(req)); }
-            apiculator.applyMatchingTemplate(api_dir, req_helpers, routes, req, res);
+          anyMulter(req, res, function(err) {
+            anyBody(req,res, function(err, body) {
+              if (!err && body) { req.body = body; }
+              var req_helpers = helpers;
+              if (dynamic_helpers) { req_helpers = Object.assign({}, req_helpers, dynamic_helpers(req)); }
+              apiculator.applyMatchingTemplate(api_dir, req_helpers, routes, req, res);
+            });
           });
         });
       }

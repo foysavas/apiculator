@@ -123,6 +123,19 @@ describe('MATCH .../_rules.babelon', function() {
           done();
         });
       });
+
+      it('should handle multipart encoding', function(done) {
+        request.post('/gatekeeper')
+        .field('password', 'please')
+        .expect(200)
+        .expect({
+          "ok": false
+        })
+        .end(function(err, res) {
+          if (err) return done(err);
+          done();
+        });
+      });
     });
   });
 
