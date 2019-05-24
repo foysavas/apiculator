@@ -76,3 +76,18 @@ api
   }
 ]
 ```
+
+### Raw Express route handlers
+
+```
+api
+└── express
+    └── get.js
+```
+
+`> api/express/get.js`
+```javascript
+  module.exports = function(req, res) {
+    res.send(`express says hello ${req.query.name}`);
+  }
+```
