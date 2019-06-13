@@ -316,6 +316,7 @@ apiculator.applyMatchingTemplate = function(
     if (tmpl_name) {
       const tmpl = `${api_dir}${req.route.path}/${tmpl_name}`;
       if (tmpl_name.match(/.js$/)) {
+        delete require.cache[require.resolve(tmpl)];
         return require(tmpl)(req, res);
       } else {
         apiculator.sendRenderedTemplate(res, tmpl, locals);
