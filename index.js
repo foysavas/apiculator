@@ -333,6 +333,8 @@ apiculator.sendRenderedTemplate = function(res, tmpl, locals) {
     res.json(babelon.evalFile(tmpl, locals));
   } else if (tmpl.match(/\.json$/)) {
     res.json(JSON.parse(fs.readFileSync(tmpl).toString()));
+  } else if (tmpl.match(/\.html$/)) {
+    res.sendFile(tmpl);
   }
 };
 
