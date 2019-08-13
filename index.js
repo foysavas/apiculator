@@ -92,7 +92,26 @@ apiculator.parseRoutes = function(api_dir, cb) {
   files = files.map(fp => {
     return fp.substr(api_dir.length);
   });
-  files = files.sort((a, b) => a.split("/").length < b.split("/").length);
+  files = files.sort((a, b) => {
+    var asplit = a.split("/");
+    var bsplit = b.split("/");
+    var is_a_longer = asplit.length > bsplit.length;
+    var shorter_length = is_a_longer ? bsplit.length : asplit.length;
+    for (var i = 0; i < shorter_length; i++) {
+      if (asplit[i] === bsplit[i]) {
+        // noop
+      } else if (asplit[i].indexOf(":") != -1 && bsplit[i].indexOf(":") != -1) {
+        return bsplit[i].indexOf(":") - asplit[i].indexOf(":");
+      } else if (asplit[i].indexOf(":") != -1) {
+        return 1;
+      } else if (bsplit[i].indexOf(":") != -1) {
+        return -1;
+      } else if (asplit.length == bsplit.length) {
+        return asplit[i].localeCompare(bsplit[i]);
+      }
+    }
+    return !is_a_longer;
+  });
   files.map(fp => {
     var segments = fp.split("/");
     var file = segments.pop();

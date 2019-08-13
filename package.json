@@ -1,6 +1,6 @@
 {
   "name": "apiculator",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Mock JSON API tool",
   "main": "index.js",
   "directories": {

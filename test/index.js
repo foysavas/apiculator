@@ -236,6 +236,23 @@ describe("MATCH .../${method}.js", function() {
   });
 });
 
+describe("Match params last", function() {
+  describe("GET /params_last/zzz", function() {
+    it("should return params_last/zzz response, not params_last/:id", function(done) {
+      request
+        .get("/params_last/zzz")
+        .expect(200)
+        .expect(function(res) {
+          assert.equal(res.text, "i'm awake");
+        })
+        .end(function(err, res) {
+          if (err) return done(err);
+          done();
+        });
+    });
+  });
+});
+
 describe("Dynamic Helpers", function() {
   describe("GET /dynamics", function() {
     it("should return ok", function(done) {
