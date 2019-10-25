@@ -16,9 +16,13 @@ var app = articulator.createServer(
   },
   function(res) {
     return { full_url: `http://example.local${res.url}` };
+  },
+  {
+    use_logger: false
   }
 );
-var request = require("supertest").agent(app.listen());
+var server = app.listen();
+var request = require("supertest").agent(server);
 
 describe("MATCH .../${method}.json", function() {
   describe("GET /", function() {
@@ -269,4 +273,8 @@ describe("Dynamic Helpers", function() {
         });
     });
   });
+});
+
+after(() => {
+  server.close();
 });

@@ -19,7 +19,7 @@ apiculator.clusterMasterSetup = function() {
   ClusterStore.setup();
 }
 
-apiculator.createServer = function(api_dir, helpers, dynamic_helpers) {
+apiculator.createServer = function(api_dir, helpers, dynamic_helpers, opts = {}) {
   api_dir = path.resolve(api_dir);
   var app = express();
   app.use(cors({ credentials: true, origin: true }));
@@ -32,19 +32,21 @@ apiculator.createServer = function(api_dir, helpers, dynamic_helpers) {
       store: new ClusterStore()
     })
   );
-  app.use(expressWinston.logger({
-    transports: [
-      new winston.transports.Console()
-    ],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.timestamp(),
-      winston.format.printf(({ level, message, label, timestamp }) => {
-        return `${timestamp} ${level}: ${message}`;
-      })
-    ),
-    msg: "{{req.method}} {{req.url}}"
-  }));
+  if (!opts || opts.use_logger !== false) {
+    app.use(expressWinston.logger({
+      transports: [
+        new winston.transports.Console()
+      ],
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.timestamp(),
+        winston.format.printf(({ level, message, label, timestamp }) => {
+          return `${timestamp} ${level}: ${message}`;
+        })
+      ),
+      msg: "{{req.method}} {{req.url}}"
+    }));
+  }
   var routes = apiculator.parseRoutes(api_dir);
   for (var route in routes) {
     var route_info = routes[route];
@@ -103,15 +105,17 @@ apiculator.createServer = function(api_dir, helpers, dynamic_helpers) {
       }
     }
   }
-  app.use(expressWinston.errorLogger({
-    transports: [
-      new winston.transports.Console()
-    ],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json()
-    )
-  }));
+  if (!opts || opts.use_logger !== false) {
+    app.use(expressWinston.errorLogger({
+      transports: [
+        new winston.transports.Console()
+      ],
+      format: winston.format.combine(
+        winston.format.colorize(),
+        winston.format.json()
+      )
+    }));
+  }
   return app;
 };
 
