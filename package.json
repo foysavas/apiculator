@@ -45,7 +45,7 @@
   "devDependencies": {
     "faker": "^3.0.1",
     "lodash": "^4.17.15",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "supertest": "^4.0.2"
   }
 }
